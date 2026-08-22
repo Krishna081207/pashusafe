@@ -1,0 +1,249 @@
+[
+  {
+    "generic_name": "Enrofloxacin",
+    "active_ingredient": "enrofloxacin",
+    "drug_class": "Fluoroquinolone",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Critically important antimicrobial; restrict use per stewardship guidance.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 3, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 3, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 6, "withdrawal_eggs_days": 6, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": 20},
+      {"species": "goat",    "withdrawal_milk_days": 3, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Oxytetracycline",
+    "active_ingredient": "oxytetracycline HCl",
+    "drug_class": "Tetracycline",
+    "aware_class": "Access",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Widely used broad-spectrum; long meat withdrawal in some formulations.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 4, "withdrawal_meat_days": 7, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 4, "withdrawal_meat_days": 7, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": null},
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 5, "withdrawal_eggs_days": 5, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": 200},
+      {"species": "goat",    "withdrawal_milk_days": 4, "withdrawal_meat_days": 7, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": null},
+      {"species": "sheep",   "withdrawal_milk_days": 4, "withdrawal_meat_days": 7, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": null},
+      {"species": "pig",     "withdrawal_milk_days": null, "withdrawal_meat_days": 7, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Amoxicillin",
+    "active_ingredient": "amoxicillin trihydrate",
+    "drug_class": "Beta-lactam",
+    "aware_class": "Access",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "First-line Access antibiotic.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 3, "withdrawal_meat_days": 15, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 4, "mrl_meat_ug_kg": 50, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 3, "withdrawal_meat_days": 15, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 4, "mrl_meat_ug_kg": 50, "mrl_eggs_ug_kg": null},
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 3, "withdrawal_eggs_days": 3, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 50, "mrl_eggs_ug_kg": 4},
+      {"species": "pig",     "withdrawal_milk_days": null, "withdrawal_meat_days": 15, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 50, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Cefalexin",
+    "active_ingredient": "cephalexin",
+    "drug_class": "Beta-lactam (cephalosporin)",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Commonly used for mastitis (intramammary).",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 2, "withdrawal_meat_days": 4, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 2, "withdrawal_meat_days": 4, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Gentamicin",
+    "active_ingredient": "gentamicin sulfate",
+    "drug_class": "Aminoglycoside",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Very long meat withdrawal -- frequent cause of residue failures.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 4, "withdrawal_meat_days": 30, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 200, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 4, "withdrawal_meat_days": 30, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 200, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "pig",     "withdrawal_milk_days": null, "withdrawal_meat_days": 30, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Sulfadiazine + Trimethoprim",
+    "active_ingredient": "sulfadiazine 200mg + trimethoprim 40mg/ml",
+    "drug_class": "Sulfonamide combination",
+    "aware_class": "Access",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Common combo for respiratory and enteric infections.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 4, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 4, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 5, "withdrawal_eggs_days": 6, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": 100},
+      {"species": "goat",    "withdrawal_milk_days": 4, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Tylosin",
+    "active_ingredient": "tylosin tartrate",
+    "drug_class": "Macrolide",
+    "aware_class": "Access",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 3, "withdrawal_meat_days": 8, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 50, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 2, "withdrawal_eggs_days": 2, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": 200},
+      {"species": "pig",     "withdrawal_milk_days": null, "withdrawal_meat_days": 8, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Florfenicol",
+    "active_ingredient": "florfenicol",
+    "drug_class": "Phenicicol",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": true,
+    "notes": "NOT permitted in lactating dairy animals producing milk for human consumption.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": null, "withdrawal_meat_days": 30, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 4, "withdrawal_eggs_days": 4, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": 100},
+      {"species": "pig",     "withdrawal_milk_days": null, "withdrawal_meat_days": 18, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Benzylpenicillin",
+    "active_ingredient": "procaine benzylpenicillin",
+    "drug_class": "Beta-lactam",
+    "aware_class": "Access",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Classic mastitis penicillin; low MRL makes test failures common.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 3, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 4, "mrl_meat_ug_kg": 50, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 3, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 4, "mrl_meat_ug_kg": 50, "mrl_eggs_ug_kg": null},
+      {"species": "pig",     "withdrawal_milk_days": null, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 50, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Streptomycin",
+    "active_ingredient": "streptomycin sulfate",
+    "drug_class": "Aminoglycoside",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Often combined with penicillin.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 3, "withdrawal_meat_days": 30, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 200, "mrl_meat_ug_kg": 500, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 3, "withdrawal_meat_days": 30, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 200, "mrl_meat_ug_kg": 500, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Doxycycline",
+    "active_ingredient": "doxycycline hyclate",
+    "drug_class": "Tetracycline",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "",
+    "rules": [
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 6, "withdrawal_eggs_days": 4, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": 100},
+      {"species": "pig",     "withdrawal_milk_days": null, "withdrawal_meat_days": 6, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Marbofloxacin",
+    "active_ingredient": "marbofloxacin",
+    "drug_class": "Fluoroquinolone",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Critically important; use only with culture sensitivity.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 2, "withdrawal_meat_days": 3, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 50, "mrl_meat_ug_kg": 50, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 2, "withdrawal_meat_days": 3, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 50, "mrl_meat_ug_kg": 50, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Colistin",
+    "active_ingredient": "colistin sulfate",
+    "drug_class": "Polypeptide",
+    "aware_class": "Reserve",
+    "prohibited_in_food_animals": true,
+    "prohibited_in_lactating_animals": true,
+    "notes": "BANNED in food-producing animals in India (last-resort human drug). Included to demo the prohibited-drug guard.",
+    "rules": []
+  },
+  {
+    "generic_name": "Cefoperazone",
+    "active_ingredient": "cefoperazone sodium",
+    "drug_class": "Beta-lactam (3rd-gen cephalosporin)",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Frequently implicated in Indian milk-residue studies.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 5, "withdrawal_meat_days": 8, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 50, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 5, "withdrawal_meat_days": 8, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 50, "mrl_meat_ug_kg": 200, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Ciprofloxacin",
+    "active_ingredient": "ciprofloxacin HCl",
+    "drug_class": "Fluoroquinolone",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "",
+    "rules": [
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 5, "withdrawal_eggs_days": 5, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": 50},
+      {"species": "cattle",  "withdrawal_milk_days": 3, "withdrawal_meat_days": 5, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 100, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null}
+    ]
+  },
+  {
+    "generic_name": "Neomycin",
+    "active_ingredient": "neomycin sulfate",
+    "drug_class": "Aminoglycoside",
+    "aware_class": "Access",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Oral/intramammary use.",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 4, "withdrawal_meat_days": 30, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 1500, "mrl_meat_ug_kg": 500, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 4, "withdrawal_meat_days": 30, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 1500, "mrl_meat_ug_kg": 500, "mrl_eggs_ug_kg": null},
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 14, "withdrawal_eggs_days": 14, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 500, "mrl_eggs_ug_kg": 500}
+    ]
+  },
+  {
+    "generic_name": "Tiamulin",
+    "active_ingredient": "tiamulin hydrogen fumarate",
+    "drug_class": "Pleuromutilin",
+    "aware_class": "Access",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "Swine and poultry use.",
+    "rules": [
+      {"species": "pig",     "withdrawal_milk_days": null, "withdrawal_meat_days": 2, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 2, "withdrawal_eggs_days": 1, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": 100}
+    ]
+  },
+  {
+    "generic_name": "Danofloxacin",
+    "active_ingredient": "danofloxacin mesylate",
+    "drug_class": "Fluoroquinolone",
+    "aware_class": "Watch",
+    "prohibited_in_food_animals": false,
+    "prohibited_in_lactating_animals": false,
+    "notes": "",
+    "rules": [
+      {"species": "cattle",  "withdrawal_milk_days": 2, "withdrawal_meat_days": 4, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 30, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "buffalo", "withdrawal_milk_days": 2, "withdrawal_meat_days": 4, "withdrawal_eggs_days": null, "mrl_milk_ug_kg": 30, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": null},
+      {"species": "poultry", "withdrawal_milk_days": null, "withdrawal_meat_days": 3, "withdrawal_eggs_days": 3, "mrl_milk_ug_kg": null, "mrl_meat_ug_kg": 100, "mrl_eggs_ug_kg": 50}
+    ]
+  }
+]

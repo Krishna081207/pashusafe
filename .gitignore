@@ -1,0 +1,20 @@
+# ---- Python / backend ----
+backend/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+backend/pashusafe.db
+*.sqlite3
+backend/ml_artifacts/
+.env
+
+# ---- Node / frontend ----
+frontend/node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
