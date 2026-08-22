@@ -24,6 +24,14 @@ export const useFarm = (farmId?: number | null) =>
 export const useAnimals = () =>
   useQuery({ queryKey: ['animals'], queryFn: () => api<any[]>('/animals') });
 
+export const useCreateAnimal = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: any) => api('/animals', { method: 'POST', body: JSON.stringify(body) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['animals'] }),
+  });
+};
+
 export const useAnimalDossier = (animalId?: number) =>
   useQuery({
     queryKey: ['animal', animalId],
