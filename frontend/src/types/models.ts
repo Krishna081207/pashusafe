@@ -151,3 +151,62 @@ export interface ChatResponse {
   mode: 'claude' | 'offline';
   sources: string[];
 }
+
+/* ---------------- installs / tracking ---------------- */
+
+export type VisitStatus = 'requested' | 'scheduled' | 'completed' | 'cancelled';
+
+export interface InstallVisit {
+  id: number;
+  farm_id: number;
+  farm_name: string | null;
+  status: VisitStatus;
+  preferred_date: string;
+  preferred_date_display: string;
+  preferred_slot: 'morning' | 'afternoon' | 'evening';
+  notes: string | null;
+  scheduled_at: string | null;
+  scheduled_at_display: string | null;
+  official_name: string | null;
+  official_phone: string | null;
+  completed_at_display: string | null;
+  cancel_reason: string | null;
+  created_at: string;
+  applied?: string[];
+}
+
+export interface Geofence {
+  center_lat: number;
+  center_lng: number;
+  radius_m: number;
+  enabled: boolean;
+  updated_at?: string;
+}
+
+export interface LiveAnimal {
+  animal_id: number;
+  tag_id: string;
+  species: string;
+  breed: string | null;
+  lat: number;
+  lng: number;
+  recorded_at: string;
+  recorded_at_display: string;
+  speed_kmh: number;
+  distance_from_center_m: number;
+  inside_geofence: boolean;
+  breach: boolean;
+}
+
+export interface LiveTracking {
+  farm_id: number;
+  geofence: Geofence;
+  animals: LiveAnimal[];
+}
+
+export interface TrackPoint {
+  lat: number;
+  lng: number;
+  recorded_at: string;
+  inside_geofence: boolean;
+}

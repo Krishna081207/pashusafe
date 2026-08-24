@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, Enum, Float, ForeignKey, String
+from sqlalchemy import JSON, DateTime, Enum, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -19,6 +19,11 @@ class Farm(Base):
     pincode: Mapped[str | None] = mapped_column(String(10), nullable=True)
     latitude: Mapped[float | None] = mapped_column(Float, nullable=True)
     longitude: Mapped[float | None] = mapped_column(Float, nullable=True)
+    # livestock profile captured at registration (all optional so old rows survive)
+    species_owned: Mapped[list | None] = mapped_column(JSON, nullable=True)      # ["cattle", ...]
+    species_counts: Mapped[dict | None] = mapped_column(JSON, nullable=True)     # {"cattle": 12}
+    herd_size_total: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    main_breeds: Mapped[str | None] = mapped_column(String(240), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
     animals: Mapped[list["Animal"]] = relationship(back_populates="farm")  # noqa: F821

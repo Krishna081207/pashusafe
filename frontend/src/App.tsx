@@ -19,6 +19,9 @@ import LabTestsPage from './pages/LabTestsPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import LedgerPage from './pages/LedgerPage';
 import PublicTracePage from './pages/PublicTracePage';
+import InstallVisitPage from './pages/InstallVisitPage';
+import AdminInstallsPage from './pages/AdminInstallsPage';
+import TrackingPage from './pages/TrackingPage';
 
 function Protected({ children }: { children: React.ReactNode }) {
   if (!getToken()) return <Navigate to="/login" replace />;
@@ -53,6 +56,9 @@ export default function App() {
       <Route path="/lab-tests" element={<RoleRoute allow={['regulator', 'admin']}><LabTestsPage /></RoleRoute>} />
       <Route path="/analytics" element={<Protected><AnalyticsPage /></Protected>} />
       <Route path="/ledger" element={<Protected><LedgerPage /></Protected>} />
+      <Route path="/tracking" element={<RoleRoute allow={['farmer']}><TrackingPage /></RoleRoute>} />
+      <Route path="/install" element={<RoleRoute allow={['farmer']}><InstallVisitPage /></RoleRoute>} />
+      <Route path="/admin/installs" element={<RoleRoute allow={['admin']}><AdminInstallsPage /></RoleRoute>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

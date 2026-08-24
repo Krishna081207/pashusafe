@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../api/client';
+import type { Geofence, InstallVisit, LiveTracking, TrackPoint } from '../types/models';
 
 // ---------- auth ----------
 export interface Me {
@@ -24,14 +25,6 @@ export const useFarm = (farmId?: number | null) =>
 export const useAnimals = () =>
   useQuery({ queryKey: ['animals'], queryFn: () => api<any[]>('/animals') });
 
-export const useCreateAnimal = () => {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (body: any) => api('/animals', { method: 'POST', body: JSON.stringify(body) }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['animals'] }),
-  });
-};
-
 export const useAnimalDossier = (animalId?: number) =>
   useQuery({
     queryKey: ['animal', animalId],
@@ -39,6 +32,29 @@ export const useAnimalDossier = (animalId?: number) =>
     enabled: animalId != null,
     refetchInterval: 60_000,
   });
+
+export const useCreateAnimal = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: {
+      tag_id: string;
+      species: string;
+      breed?: string | null;
+      sex?: string;
+      production_status?: string;
+      weight_kg?: number | null;
+      birth_date?: string | null;
+    }) => api<{ id: number; tag_id: string; qr_code: string }>('/animals', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['animals'] });
+      qc.invalidateQueries({ queryKey: ['dashboard'] });
+      qc.invalidateQueries({ queryKey: ['tracking'] });
+    },
+  });
+};
 
 export const useDrugs = () =>
   useQuery({ queryKey: ['drugs'], queryFn: () => api<any[]>('/drugs'), staleTime: 5 * 60_000 });
@@ -75,8 +91,12 @@ export const useViolations = () =>
   useQuery({ queryKey: ['mrl', 'violations'], queryFn: () => api<any[]>('/mrl/violations') });
 
 // ---------- alerts ----------
-export const useAlerts = () =>
-  useQuery({ queryKey: ['alerts'], queryFn: () => api<any[]>('/alerts'), refetchInterval: 60_000 });
+export const useAlerts = (refetchIntervalMs: number = 60_000) =>
+  useQuery({
+    queryKey: ['alerts'],
+    queryFn: () => api<any[]>('/alerts'),
+    refetchInterval: refetchIntervalMs,
+  });
 
 export const useResolveAlert = () => {
   const qc = useQueryClient();
@@ -247,4 +267,75 @@ export const usePublicTrace = (qrCode?: string) =>
     queryKey: ['trace', qrCode],
     queryFn: () => api(`/trace/public/${qrCode}`),
     enabled: qrCode != null,
+  });
+
+// ---------- sensor install visits ----------
+export const useInstallVisits = () =>
+  useQuery({
+    queryKey: ['installs'],
+    queryFn: () => api<InstallVisit[]>('/installs'),
+    refetchInterval: 45_000,
+  });
+
+export const useRequestInstallVisit = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: { preferred_date: string; preferred_slot: string; notes?: string }) =>
+      api('/installs', { method: 'POST', body: JSON.stringify(body) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['installs'] }),
+  });
+};
+
+export const useCancelInstallVisit = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, reason }: { id: number; reason?: string }) =>
+      api(`/installs/${id}/cancel${reason ? `?reason=${encodeURIComponent(reason)}` : ''}`, {
+        method: 'POST',
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['installs'] }),
+  });
+};
+
+export const useUpdateInstallVisit = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...body }: { id: number; status?: string; scheduled_at?: string; official_name?: string; official_phone?: string; cancel_reason?: string }) =>
+      api(`/installs/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['installs'] });
+      qc.invalidateQueries({ queryKey: ['alerts'] });
+    },
+  });
+};
+
+// ---------- live tracking / geofence ----------
+export const useLiveTracking = () =>
+  useQuery({
+    queryKey: ['tracking', 'live'],
+    queryFn: () => api<LiveTracking>('/tracking/live'),
+    refetchInterval: 10_000,
+  });
+
+export const useGeofence = () =>
+  useQuery({
+    queryKey: ['tracking', 'geofence'],
+    queryFn: () => api<Geofence>('/tracking/geofence'),
+  });
+
+export const useUpdateGeofence = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: Geofence) =>
+      api('/tracking/geofence', { method: 'PUT', body: JSON.stringify(body) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['tracking'] }),
+  });
+};
+
+export const useTrackingHistory = (animalId?: number, minutes: number = 120) =>
+  useQuery({
+    queryKey: ['tracking', 'history', animalId, minutes],
+    queryFn: () => api<TrackPoint[]>(`/tracking/history?animal_id=${animalId}&minutes=${minutes}`),
+    enabled: animalId != null,
+    refetchInterval: 20_000,
   });

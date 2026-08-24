@@ -9,6 +9,7 @@ from app.api.v1.routers import (
     auth,
     drugs,
     farms,
+    installs,
     iot,
     ledger,
     ml,
@@ -17,6 +18,7 @@ from app.api.v1.routers import (
     residue_tests,
     sales,
     trace,
+    tracking,
 )
 
 api_router = APIRouter(prefix="/api/v1")
@@ -32,6 +34,8 @@ api_router.include_router(residue_tests.router)
 api_router.include_router(alerts.router)
 api_router.include_router(analytics.router)
 api_router.include_router(iot.router)
+api_router.include_router(installs.router)
+api_router.include_router(tracking.router)
 api_router.include_router(trace.router)
 api_router.include_router(ledger.router)
 api_router.include_router(assistant.router)

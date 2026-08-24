@@ -1,9 +1,10 @@
 from datetime import date, datetime
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 from app.models.enums import (
     BuyerType,
+    PreferredSlot,
     ProductionStatus,
     ResidueResult,
     Role,
@@ -11,10 +12,38 @@ from app.models.enums import (
     SaleProduct,
     Sex,
     Species,
+    VisitStatus,
 )
+from app.utils.timeutil import ist_date, utcnow
 
 
 # ---- auth ----
+class LivestockProfileIn(BaseModel):
+    """Livestock questions answered during farmer registration."""
+
+    species_owned: list[Species] = []
+    species_counts: dict[Species, int] | None = Field(
+        default=None, description="head count per species, e.g. {cattle: 4}"
+    )
+    herd_size_total: int | None = Field(default=None, ge=1, le=100_000)
+    main_breeds: str | None = Field(default=None, max_length=240)
+
+
+class InstallVisitRequestIn(BaseModel):
+    """Preferred slot for the IoT sensor installation visit."""
+
+    preferred_date: date
+    preferred_slot: PreferredSlot = PreferredSlot.morning
+    notes: str | None = Field(default=None, max_length=300)
+
+    @field_validator("preferred_date")
+    @classmethod
+    def _not_past(cls, v: date) -> date:
+        if v < ist_date(utcnow()):
+            raise ValueError("preferred_date must be today or later")
+        return v
+
+
 class FarmerRegisterIn(BaseModel):
     full_name: str = Field(min_length=2, max_length=120)
     email: EmailStr
@@ -25,6 +54,9 @@ class FarmerRegisterIn(BaseModel):
     district: str | None = None
     state: str | None = None
     pincode: str | None = None
+    # optional extras -- legacy payloads without them still validate
+    profile: LivestockProfileIn | None = None
+    install_visit: InstallVisitRequestIn | None = None
 
 
 class StaffRegisterIn(BaseModel):
@@ -51,6 +83,16 @@ class UserOut(BaseModel):
     role: Role
     farm_id: int | None
     phone: str | None = None
+
+
+class InstallVisitUpdateIn(BaseModel):
+    """Admin actions on an installation visit (partial update)."""
+
+    status: VisitStatus | None = None
+    scheduled_at: datetime | None = None
+    official_name: str | None = Field(default=None, max_length=120)
+    official_phone: str | None = Field(default=None, max_length=20)
+    cancel_reason: str | None = Field(default=None, max_length=240)
 
 
 # ---- farm ----

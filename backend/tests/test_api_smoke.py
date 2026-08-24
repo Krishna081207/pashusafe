@@ -273,6 +273,10 @@ def test_all_get_endpoints_healthy(client, tokens):
         "/api/v1/ledger/events",
         "/api/v1/ledger/verify",
         "/api/v1/assistant/suggestions",
+        f"/api/v1/tracking/history?animal_id={animal_id}&minutes=60",
+        "/api/v1/tracking/geofence",
+        "/api/v1/tracking/live",
+        "/api/v1/installs",
     ]
     for ep in endpoints:
         r = client.get(ep, headers=tokens["farmer"])

@@ -4,7 +4,7 @@ from sqlalchemy import Boolean, DateTime, Enum, Float, ForeignKey, Index, Intege
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
-from app.models.enums import AlertSeverity, AlertType
+from app.models.enums import AlertAudience, AlertSeverity, AlertType
 from app.utils.timeutil import utcnow
 
 
@@ -33,6 +33,12 @@ class Alert(Base):
     animal_id: Mapped[int | None] = mapped_column(ForeignKey("animals.id"), nullable=True)
     type: Mapped[AlertType] = mapped_column(Enum(AlertType, native_enum=False))
     severity: Mapped[AlertSeverity] = mapped_column(Enum(AlertSeverity, native_enum=False))
+    audience: Mapped[AlertAudience] = mapped_column(
+        Enum(AlertAudience, native_enum=False),
+        default=AlertAudience.all,
+        server_default="all",
+        nullable=False,
+    )
     title: Mapped[str] = mapped_column(String(200))
     message: Mapped[str] = mapped_column(Text)
     related_type: Mapped[str | None] = mapped_column(String(40), nullable=True)

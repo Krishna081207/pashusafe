@@ -28,12 +28,15 @@ from app.models import (  # noqa: E402
     Administration,
     Alert,
     Animal,
+    AnimalPosition,
     Drug,
     DrugSpeciesRule,
     Farm,
+    Geofence,
     Prescription,
     ResidueTest,
     SaleEvent,
+    SensorInstallVisit,
     SensorReading,
     TraceLedgerEntry,
     User,
@@ -46,6 +49,7 @@ from app.models.enums import (  # noqa: E402
     AWaReClass,
     BuyerType,
     LedgerEventType,
+    PreferredSlot,
     ProductionStatus,
     ResidueResult,
     Role,
@@ -53,8 +57,9 @@ from app.models.enums import (  # noqa: E402
     SaleProduct,
     Sex,
     Species,
+    VisitStatus,
 )
-from app.services import alert_service, iot_simulator  # noqa: E402
+from app.services import alert_service, gps_simulator, iot_simulator  # noqa: E402
 from app.services.ledger_service import append_event  # noqa: E402
 from app.services.ml.train import train_all  # noqa: E402
 from app.services.mrl_engine import (  # noqa: E402
@@ -65,7 +70,14 @@ from app.services.mrl_engine import (  # noqa: E402
     ist_str,
     record_administration,
 )
-from app.utils.timeutil import ensure_aware, utcnow, withdrawal_clears_at  # noqa: E402
+from app.utils.timeutil import (  # noqa: E402
+    as_ist,
+    ensure_aware,
+    ist_date,
+    to_utc,
+    utcnow,
+    withdrawal_clears_at,
+)
 
 RNG = random.Random(42)
 NOW = ensure_aware(utcnow())
@@ -209,6 +221,74 @@ def create_herds(db, farms: list[Farm]) -> list[Animal]:
 
 def vet_user(users: list[User]) -> User:
     return next(u for u in users if u.role == Role.vet)
+
+
+GEOFENCE_RADII = {1: 400.0, 2: 350.0, 3: 500.0, 4: 300.0, 5: 450.0}
+
+
+def create_geofences(db, farms: list[Farm]) -> list[Geofence]:
+    """One circular boundary per farm, centred on the farm's coordinates."""
+    fences = []
+    for idx, farm in enumerate(farms, start=1):
+        fence = Geofence(
+            farm_id=farm.id,
+            center_lat=farm.latitude,
+            center_lng=farm.longitude,
+            radius_m=GEOFENCE_RADII[idx],
+            enabled=True,
+        )
+        db.add(fence)
+        fences.append(fence)
+    db.flush()
+    return fences
+
+
+def create_install_visits(db, farms: list[Farm], users: list[User]) -> list[SensorInstallVisit]:
+    """Demo install-visit history: one completed, one upcoming, one requested."""
+    def farmer_for(farm_idx: int) -> User:
+        return next(u for u in users if u.role == Role.farmer and u.farm_id == farms[farm_idx - 1].id)
+
+    official = ("Kiran Rathod", "+91-9876500011")  # field installation officer
+    visits = [
+        # Ravi: sensors already installed three weeks ago
+        SensorInstallVisit(
+            farm_id=farms[0].id,
+            requested_by_user_id=farmer_for(1).id,
+            status=VisitStatus.completed,
+            preferred_date=(NOW - timedelta(days=21)).date(),
+            preferred_slot=PreferredSlot.morning,
+            scheduled_at=to_utc(as_ist(NOW - timedelta(days=21)).replace(
+                hour=9, minute=30, second=0, microsecond=0)),
+            official_name=official[0],
+            official_phone=official[1],
+            completed_at=NOW - timedelta(days=20),
+        ),
+        # Manoj: confirmed visit tomorrow morning (IST)
+        SensorInstallVisit(
+            farm_id=farms[2].id,
+            requested_by_user_id=farmer_for(3).id,
+            status=VisitStatus.scheduled,
+            preferred_date=ist_date(NOW + timedelta(days=1)),
+            preferred_slot=PreferredSlot.morning,
+            scheduled_at=to_utc((as_ist(NOW) + timedelta(days=1)).replace(
+                hour=8, minute=0, second=0, microsecond=0)),
+            official_name=official[0],
+            official_phone=official[1],
+        ),
+        # Aisha: still waiting for confirmation
+        SensorInstallVisit(
+            farm_id=farms[4].id,
+            requested_by_user_id=farmer_for(5).id,
+            status=VisitStatus.requested,
+            preferred_date=ist_date(NOW + timedelta(days=2)),
+            preferred_slot=PreferredSlot.morning,
+            notes="Gate is narrow -- van must park on the road.",
+        ),
+    ]
+    for v in visits:
+        db.add(v)
+    db.flush()
+    return visits
 
 
 def generate_history(db, farms, users, animals, drugs):
@@ -407,6 +487,11 @@ def scripted_scenarios(db, farms, users, animals, drugs):
     fever_buf = by_tag["MUR-003"]
     fever_buf.scenario_tag = "fever_outbreak"
 
+    # (f) GEOFENCE BREACH -- MUR-002 wanders out of the farm boundary on a
+    # deterministic 2-hour cycle; the farmer-only alert is raised/resolved by
+    # gps_simulator.sync_breach_alerts when /tracking/live is polled.
+    by_tag["MUR-002"].scenario_tag = "geofence_breach"
+
     # (e) PROHIBITED DRUG -- colistin on a laying hen --------------------------
     hen = by_tag["VAN-003"]
     col_admin, _ = record_administration(
@@ -425,7 +510,7 @@ def scripted_scenarios(db, farms, users, animals, drugs):
         related_type="administration", related_id=col_admin.id,
     )
     db.flush()
-    print("[seed] scenarios B-E planted")
+    print("[seed] scenarios B-F planted")
 
 
 def verdict_hours(clears_at, sale_time):
@@ -466,6 +551,8 @@ def main() -> None:
 
         stats = generate_history(db, farms, users, animals, drugs)
         scripted_scenarios(db, farms, users, animals, drugs)
+        create_geofences(db, farms)
+        create_install_visits(db, farms, users)
 
         # ledger entries for every administration + sale (single consistent chain)
         animal_map = {a.id: a for a in animals}
@@ -508,6 +595,10 @@ def main() -> None:
         dairy_ids = [a.id for a in animals if a.species in (Species.cattle, Species.buffalo)][:6]
         iot_simulator.advance(db, active_ids + dairy_ids, hours_back=72)
 
+        # pre-warm the GPS feed for farm 1 so Live Tracking has history at first login
+        farm1_animals = [a for a in animals if a.farm_id == farms[0].id]
+        gps_simulator.advance_positions(db, farm1_animals, hours_back=6)
+
         db.commit()
 
         metrics = train_all(db)
@@ -520,6 +611,9 @@ def main() -> None:
             "alerts": db.query(Alert).count(),
             "ledger_entries": db.query(TraceLedgerEntry).count(),
             "sensor_readings": db.query(SensorReading).count(),
+            "install_visits": db.query(SensorInstallVisit).count(),
+            "geofences": db.query(Geofence).count(),
+            "animal_positions": db.query(AnimalPosition).count(),
         }
         ml_metrics = metrics
 

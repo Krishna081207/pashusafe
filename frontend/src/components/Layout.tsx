@@ -14,6 +14,9 @@ import {
   ShieldCheck,
   LogOut,
   Search,
+  MapPinned,
+  Wrench,
+  CalendarClock,
 } from 'lucide-react';
 import { setToken } from '../api/client';
 import { useAlerts, useMe } from '../hooks/queries';
@@ -33,6 +36,9 @@ const NAV: NavItem[] = [
   { to: '/treatments/new', label: 'Record Treatment', icon: Syringe, roles: ['farmer'] },
   { to: '/compliance', label: 'Withdrawal Monitor', icon: Timer, roles: ['farmer', 'vet'] },
   { to: '/sales', label: 'Record Sale', icon: ShoppingCart, roles: ['farmer'] },
+  { to: '/tracking', label: 'Live Tracking', icon: MapPinned, roles: ['farmer'] },
+  { to: '/install', label: 'Sensor Installation', icon: Wrench, roles: ['farmer'] },
+  { to: '/admin/installs', label: 'Installation Queue', icon: CalendarClock, roles: ['admin'] },
   { to: '/alerts', label: 'Alerts', icon: Bell },
   { to: '/prescriptions', label: 'Digital Prescriptions', icon: FileSpreadsheet, roles: ['vet', 'admin'] },
   { to: '/violations', label: 'Violation Register', icon: AlertTriangle, roles: ['regulator', 'admin'] },

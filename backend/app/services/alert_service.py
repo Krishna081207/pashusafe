@@ -10,7 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models import Alert, Animal, Administration, SensorReading, WithdrawalPeriod
-from app.models.enums import AlertSeverity, AlertType
+from app.models.enums import AlertAudience, AlertSeverity, AlertType
 from app.utils.timeutil import ensure_aware, ist_str, utcnow
 
 
@@ -25,6 +25,7 @@ def create_alert(
     animal_id: int | None = None,
     related_type: str | None = None,
     related_id: int | None = None,
+    audience: AlertAudience = AlertAudience.all,
     dedupe_window: timedelta | None = None,
 ) -> Alert:
     if dedupe_window is not None:
@@ -49,6 +50,7 @@ def create_alert(
         message=message,
         related_type=related_type,
         related_id=related_id,
+        audience=audience,
     )
     db.add(alert)
     db.flush()
@@ -108,6 +110,7 @@ def serialize(alert: Alert) -> dict:
         "animal_id": alert.animal_id,
         "type": alert.type.value,
         "severity": alert.severity.value,
+        "audience": alert.audience.value,
         "title": alert.title,
         "message": alert.message,
         "related_type": alert.related_type,

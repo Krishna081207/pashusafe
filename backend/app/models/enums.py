@@ -98,6 +98,26 @@ class AlertType(str, enum.Enum):
     ML_MRL_RISK_HIGH = "ML_MRL_RISK_HIGH"
     OUTBREAK_RISK = "OUTBREAK_RISK"
     SENSOR_ANOMALY = "SENSOR_ANOMALY"
+    GEOFENCE_BREACH = "GEOFENCE_BREACH"
+    INSTALL_UPDATE = "INSTALL_UPDATE"
+
+
+class AlertAudience(str, enum.Enum):
+    all = "all"          # every role with farm visibility
+    farmer = "farmer"    # visible only to the owning farmer
+
+
+class VisitStatus(str, enum.Enum):
+    requested = "requested"
+    scheduled = "scheduled"
+    completed = "completed"
+    cancelled = "cancelled"
+
+
+class PreferredSlot(str, enum.Enum):
+    morning = "morning"
+    afternoon = "afternoon"
+    evening = "evening"
 
 
 class LedgerEventType(str, enum.Enum):

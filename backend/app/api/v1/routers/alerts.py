@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.core.deps import ensure_farm_access, get_current_user, scoped_farm_ids
 from app.db.session import get_db
 from app.models import Alert, User
+from app.models.enums import AlertAudience, Role
 from app.services import alert_service
 from app.utils.timeutil import utcnow
 
@@ -28,6 +29,8 @@ def list_alerts(
         stmt = stmt.where(Alert.farm_id.in_(allowed or [-1]))
     elif farm_id is not None:
         stmt = stmt.where(Alert.farm_id == farm_id)
+    if user.role != Role.farmer:  # staff never see farmer-only notifications
+        stmt = stmt.where(Alert.audience == AlertAudience.all)
     if unresolved_only:
         stmt = stmt.where(Alert.resolved_at.is_(None))
     alerts = db.execute(stmt).scalars().all()
@@ -41,12 +44,19 @@ def list_alerts(
     return items
 
 
+def _ensure_alert_visible(user: User, alert: Alert) -> None:
+    """Farmer-only alerts stay invisible to every other role."""
+    if alert.audience == AlertAudience.farmer and user.role != Role.farmer:
+        raise HTTPException(403, "Farmer-only notification")
+
+
 @router.patch("/{alert_id}/read")
 def mark_read(alert_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     alert = db.get(Alert, alert_id)
     if not alert:
         raise HTTPException(404, "Alert not found")
     ensure_farm_access(user, alert.farm_id)
+    _ensure_alert_visible(user, alert)
     alert.is_read = True
     db.commit()
     return {"ok": True}
@@ -58,6 +68,7 @@ def resolve(alert_id: int, db: Session = Depends(get_db), user: User = Depends(g
     if not alert:
         raise HTTPException(404, "Alert not found")
     ensure_farm_access(user, alert.farm_id)
+    _ensure_alert_visible(user, alert)
     alert.resolved_at = utcnow()
     db.commit()
     return {"ok": True}
