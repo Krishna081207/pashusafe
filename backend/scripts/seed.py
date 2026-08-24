@@ -10,6 +10,7 @@ scripted scenarios, then trains the ML models. Deterministic (fixed RNG).
 Prints the demo credentials at the end.
 """
 
+import argparse
 import json
 import random
 import sys
@@ -18,6 +19,8 @@ from pathlib import Path
 
 # allow `python scripts/seed.py` from backend/
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from sqlalchemy.exc import OperationalError  # noqa: E402
 
 from app.core.config import get_settings  # noqa: E402
 from app.db.session import SessionLocal, engine  # noqa: E402
@@ -430,6 +433,24 @@ def verdict_hours(clears_at, sale_time):
 
 
 def main() -> None:
+    ap = argparse.ArgumentParser(description="PashuSafe demo seeder")
+    ap.add_argument("--force", action="store_true",
+                    help="wipe and reseed even if the database already has data")
+    args = ap.parse_args()
+
+    db = SessionLocal()
+    try:
+        existing_users = db.query(User).count()
+    except OperationalError:
+        existing_users = 0  # fresh database -- tables don't exist yet
+    finally:
+        db.close()
+
+    if existing_users and not args.force:
+        print(f"[seed] database already has {existing_users} users -- keeping it. "
+              "Run `python scripts/seed.py --force` to wipe and reseed.")
+        return
+
     print("[seed] dropping + recreating schema ...")
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
