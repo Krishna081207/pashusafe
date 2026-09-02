@@ -10,7 +10,12 @@ class Settings(BaseSettings):
     jwt_secret: str = "dev-secret-change-me-before-you-ship-32-bytes!"
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60 * 12
-    cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    cors_origins: list[str] = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
+    ]
     anthropic_api_key: str | None = None
     anthropic_model: str = "claude-sonnet-4-5"
 
