@@ -1,0 +1,19 @@
+{
+  "navbar": {
+    "title": "PashuSafe",
+    "dashboard": "Dashboard",
+    "animals": "Livestock",
+    "treatments": "Log Treatment",
+    "procurement": "Procurement Gate"
+  },
+  "status": {
+    "safe": "Safe for Procurement",
+    "quarantined": "Withdrawal Period Active (Unsafe)",
+    "days_left": "{{count}} days remaining"
+  },
+  "treatment": {
+    "tag_id": "Ear Tag / RFID ID",
+    "drug_name": "Antibiotic Administered",
+    "submit": "Submit Log"
+  }
+}
