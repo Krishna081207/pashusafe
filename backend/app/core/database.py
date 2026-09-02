@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.engine import make_url
 from sqlalchemy.orm import DeclarativeBase
 from app.core.config import get_settings
 
@@ -13,7 +14,15 @@ elif db_url.startswith("postgres://"):
 elif db_url.startswith("postgresql://") and not db_url.startswith("postgresql+asyncpg://"):
     db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
-engine = create_async_engine(db_url, echo=False, future=True)
+connect_args: dict = {}
+if db_url.startswith("postgresql+asyncpg://"):
+    asyncpg_url = make_url(db_url)
+    sslmode = asyncpg_url.query.get("sslmode")
+    if sslmode:
+        connect_args["ssl"] = sslmode != "disable"
+        db_url = str(asyncpg_url.difference_update_query(["sslmode"]))
+
+engine = create_async_engine(db_url, echo=False, future=True, connect_args=connect_args)
 AsyncSessionLocal = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
 class Base(DeclarativeBase):
