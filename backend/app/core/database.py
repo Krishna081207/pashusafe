@@ -5,8 +5,10 @@ from app.core.config import get_settings
 settings = get_settings()
 
 db_url = settings.database_url
-# Fix dialect prefix for SQLAlchemy 2.0 + asyncpg on cloud providers (Neon/Render)
-if db_url.startswith("postgres://"):
+# Select async drivers for both local SQLite and PostgreSQL deployments.
+if db_url.startswith("sqlite://") and not db_url.startswith("sqlite+aiosqlite://"):
+    db_url = db_url.replace("sqlite://", "sqlite+aiosqlite://", 1)
+elif db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql+asyncpg://", 1)
 elif db_url.startswith("postgresql://") and not db_url.startswith("postgresql+asyncpg://"):
     db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
