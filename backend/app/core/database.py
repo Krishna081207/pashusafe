@@ -20,7 +20,8 @@ if db_url.startswith("postgresql+asyncpg://"):
     sslmode = asyncpg_url.query.get("sslmode")
     if sslmode:
         connect_args["ssl"] = sslmode != "disable"
-        db_url = str(asyncpg_url.difference_update_query(["sslmode"]))
+    # Render/libpq URLs may include parameters that asyncpg does not accept.
+    db_url = str(asyncpg_url.difference_update_query(["sslmode", "channel_binding"]))
 
 engine = create_async_engine(db_url, echo=False, future=True, connect_args=connect_args)
 AsyncSessionLocal = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
