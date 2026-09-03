@@ -1,0 +1,17 @@
+fastapi>=0.115
+uvicorn[standard]>=0.30
+sqlalchemy>=2.0.30
+aiosqlite>=0.20
+asyncpg>=0.29
+pydantic>=2.7
+pydantic-settings>=2.3
+pyjwt>=2.8
+bcrypt>=4.1
+python-multipart>=0.0.9
+email-validator>=2.1
+psycopg[binary]>=3.2 ; platform_machine != "unsupported"
+scikit-learn>=1.5
+joblib>=1.3
+numpy>=1.26
+httpx>=0.27
+anthropic>=0.40

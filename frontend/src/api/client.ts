@@ -1,4 +1,5 @@
 const TOKEN_KEY = 'pashusafe_token';
+export const API_BASE_URL = '/api';
 
 export class ApiError extends Error {
   status: number;
@@ -37,7 +38,7 @@ export async function api<T = any>(path: string, options: RequestInit = {}): Pro
   const token = getToken();
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(`/api/v1${path}`, { ...options, headers });
+  const res = await fetch(`${API_BASE_URL}/v1${path}`, { ...options, headers });
 
   if (res.status === 401 && !path.startsWith('/auth/login')) {
     setToken(null);
@@ -60,7 +61,7 @@ export async function api<T = any>(path: string, options: RequestInit = {}): Pro
 
 export async function loginForm(email: string, password: string) {
   const form = new URLSearchParams({ username: email, password });
-  const res = await fetch('/api/v1/auth/login', {
+  const res = await fetch(`${API_BASE_URL}/v1/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: form.toString(),

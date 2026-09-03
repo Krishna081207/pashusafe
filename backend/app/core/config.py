@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -7,7 +8,10 @@ class Settings(BaseSettings):
     app_name: str = "PashuSafe API"
     environment: str = "development"  # "development" | "production"
     database_url: str = "sqlite:///./pashusafe.db"
-    jwt_secret: str = "dev-secret-change-me-before-you-ship-32-bytes!"
+    jwt_secret: str = Field(
+        default="dev-secret-change-me-before-you-ship-32-bytes!",
+        validation_alias=AliasChoices("JWT_SECRET", "SECRET_KEY"),
+    )
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60 * 12
     cors_origins: list[str] = [
